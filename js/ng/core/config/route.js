@@ -10,7 +10,7 @@ app.config([
 			})
 			.state('/category', {
 				url: '/category',
-				templateUrl: 'js/ng/category/view/index.html',
+				templateUrl: 'js/ng/app/category/views/index.html',
 				controller: 'category_ctrl'
 			})
 		;
