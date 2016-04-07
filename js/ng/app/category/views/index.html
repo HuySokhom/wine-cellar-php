@@ -1,5 +1,8 @@
 <div class="panel-body">
-    <a class="btn-floating btn-large waves-effect waves-light red" data-ng-click="popup();">
+    <a
+        class="btn-floating btn-large waves-effect waves-light red"
+        href="#/category/create"
+    >
         <i class="material-icons">add</i>
     </a>
     <br/><br/>
@@ -12,80 +15,28 @@
                 Name
             </th>
             <th>
-                Category Name
-            </th>
-            <th>
                 Description
             </th>
-            <th>
-                Price
-            </th>
-            <th width="150px">
+            <th width="250px">
                 Action
             </th>
         </thead>
-        <tr data-ng-repeat="p in products.data">
+        <tr data-ng-repeat="c in categories.data">
             <td>
-                <span data-ng-bind="p.id"></span>
+                <span data-ng-bind="c.id"></span>
             </td>
             <td>
-                <span data-ng-bind="p.name"></span>
+                <span data-ng-bind="c.name"></span>
             </td>
             <td>
-                <span data-ng-bind="p.min_values"></span>
-            </td>
-            <th>
-                <span data-ng-bind="p.max_values"></span>
-            </th>
-            <td>
-                <span data-ng-bind="p.drcr"></span>
+                <span data-ng-bind="c.description"></span>
             </td>
             <td>
-                <button class="btn btn-default" data-ng-click="edit(p);">
-                    <span class="fa fa-edit"></span>
-                </button>
-                <button
-                    class="btn btn-success"
-                    data-ng-click="updateStatus(p);"
-                    data-ng-if="p.status == 1"
-                >
-                    <span class="fa fa-check-square-o"></span>
-                </button>
-                <button
-                    class="btn btn-warning"
-                    data-ng-if="p.status == 0"
-                    data-ng-click="updateStatus(p);"
-                >
-                    <span class="fa fa-minus-square-o"></span>
-                </button>
+                <a href="#/category/edit/{{c.id}}">
+                    <md-button class="md-raised">Edit</md-button>
+                </a>
+                <md-button class="md-raised md-warn" data-ng-click="remove(c.id);">Delete</md-button>
             </td>
         </tr>
     </table>
-    <div
-        data-ng-if="accountType.elements == 0"
-    >
-        <div class="alert alert-warning alert-dismissible">
-            <strong>Warning!</strong> No product post.
-        </div>
-    </div>
-    <div
-        data-ng-if="!accountType"
-        class="align_center"
-        <i class="fa fa-refresh fa-spin" style="font-size: 100px;"></i>
-    </div>
-
 </div>
-<div
-    class="panel-footer"
-    data-ng-show="totalItems > 10"
->
-    <pagination
-        total-items="totalItems"
-        ng-model="currentPage"
-        ng-change="pageChanged()"
-        max-size="5"
-        items-per-page="10"
-        boundary-links="true"
-    ></pagination>
-</div>
-<category:popup></category:popup>

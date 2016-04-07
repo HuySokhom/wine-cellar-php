@@ -4,74 +4,19 @@ app.controller(
 	, 'Restful'
 	, function ($scope, Restful){
 		'use strict';
-		var url = 'api/category';
-		$scope.init = function(params){
-			Restful.get(url, params).success(function(data){
-				$scope.products = data;console.log(data);
-				$scope.totalItems = data.count;
+
+		$scope.init = function(){
+			Restful.get('api/category/getCategory').success(function(data){
+				$scope.categories = data;
 			});
 		};
 		$scope.init();
-		$scope.popup = function(){
-			$('#modal').openModal();
-		};
-
-		$scope.updateStatus = function(params){
-			params.status === 1 ? params.status = 0 : params.status = 1;
-			Restful.patch(url + params.id, params ).success(function(data) {console.log(data);
-				$scope.service.alertMessage('<strong>Success: </strong>', 'Update Success.', 'success');
-			});
-		};
-		/**
-		 * start functionality pagination
-		 */
-		$scope.currentPage = 1;
-		//get another portions of data on page changed
-		$scope.pageChanged = function() {
-			$scope.pageSize = 10 * ( $scope.currentPage - 1 );
-			params.start = $scope.pageSize;
-			$scope.init(params);
-		};
-
-		$scope.edit = function(params){
-			$scope.params = angular.copy(params);
-			$scope.name = $scope.params.name;
-			$scope.min_values = $scope.params.min_values;
-			$scope.max_values = $scope.params.max_values;
-			$scope.drcr = $scope.params.drcr;
-			$scope.id = $scope.params.id;
-			$('#account-type-popup').modal('show');
-		};
-
-		$scope.save = function(){
-			var data = {name: $scope.name, min_values: $scope.min_values, max_values: $scope.max_values, drcr: $scope.drcr};
-			$scope.disable = false;
-			if($scope.id) {console.log($scope.id);
-				Restful.put( url + $scope.id, data).success(function (data) {
-					$scope.init();console.log(data);
-					$scope.service.alertMessage('<strong>Success: </strong>', 'Update Success.', 'success');
-					$('#account-type-popup').modal('hide');
-					$scope.clear();
-					$scope.disable = true;
-				});
-			}else {
-				Restful.save( url , data).success(function (data) {
-					$scope.init();console.log(data);
-					$('#account-type-popup').modal('hide');
-					$scope.clear();
-					$scope.service.alertMessage('<strong>Success: </strong>', 'Save Success.', 'success');
-					$scope.disable = true;
+		$scope.remove = function(id){
+			if (confirm('Are you sure you want to this category?')) {
+				Restful.delete('api/category/deleteCategory/' + id).success(function(data){
+					$scope.init();
 				});
 			}
-		};
-
-		$scope.clear = function(){
-			$scope.disable = true;
-			$scope.name = '';
-			$scope.min_values = '';
-			$scope.max_values = '';
-			$scope.drcr = '';
-			$scope.id = '';
 		};
 	}
 ]);
