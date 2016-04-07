@@ -1,6 +1,7 @@
 var app = angular.module(
 	'main',
 	[
-	 	'ui.router'
+	 	'ui.router',
+		'ngSanitize'
 	]
 );

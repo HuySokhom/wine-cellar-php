@@ -5,8 +5,8 @@ app.config([
 		$stateProvider.
 			state('/', {
 				url: '/',
-				templateUrl: 'js/ng/app/index/partial/index.html',
-				controller: 'index_ctrl'
+				templateUrl: 'js/ng/app/product/views/index.html',
+				controller: 'product_ctrl'
 			})
 			.state('/category', {
 				url: '/category',
