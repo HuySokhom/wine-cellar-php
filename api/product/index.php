@@ -4,17 +4,18 @@ require '../Slim/Slim.php';
 
 $app = new Slim();
 
-$app->get('/product', 'getProducts');
-$app->get('/product/:id',	'getWine');
+$app->get('/getProduct', 'getProducts');
+$app->get('/getProduct/:id',	'getWine');
 $app->get('/product/search/:query', 'findByName');
-$app->post('/product', 'addWine');
-$app->put('/product/:id', 'updateWine');
-$app->delete('/product/:id',	'deleteWine');
+$app->post('/getProduct', 'addWine');
+$app->put('/getProduct/:id', 'updateWine');
+$app->delete('/deleteProduct/:id',	'deleteProduct');
 
 $app->run();
 
 function getProducts() {
-	$sql = "select * FROM products ORDER BY id";
+	$sql = "select p.id, p.name, p.description, p.price, p.qty, c.id as category_id, c.name as category_name
+		FROM products p LEFT JOIN category c on c.id = p.category_id  ORDER BY id";
 	try {
 		$db = getConnection();
 		$stmt = $db->query($sql);  
@@ -41,26 +42,24 @@ function getWine($id) {
 	}
 }
 
-function addWine() {
-	error_log('addWine\n', 3, '/var/tmp/php.log');
+function addProduct() {
 	$request = Slim::getInstance()->request();
 	$wine = json_decode($request->getBody());
-	$sql = "INSERT INTO wine (name, grapes, country, region, year, description) VALUES (:name, :grapes, :country, :region, :year, :description)";
+	$sql = "INSERT INTO wine (name, category_id, description, price, qty) VALUES (:name, :category_id, :description, :price, :qty)";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("name", $wine->name);
-		$stmt->bindParam("grapes", $wine->grapes);
-		$stmt->bindParam("country", $wine->country);
-		$stmt->bindParam("region", $wine->region);
-		$stmt->bindParam("year", $wine->year);
+		$stmt->bindParam("category_id", $wine->category_id);
 		$stmt->bindParam("description", $wine->description);
+
+		$stmt->bindParam("price", $wine->price);
+		$stmt->bindParam("qty", $wine->qty);
 		$stmt->execute();
 		$wine->id = $db->lastInsertId();
 		$db = null;
 		echo json_encode($wine); 
 	} catch(PDOException $e) {
-		error_log($e->getMessage(), 3, '/var/tmp/php.log');
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
@@ -88,8 +87,8 @@ function updateWine($id) {
 	}
 }
 
-function deleteWine($id) {
-	$sql = "DELETE FROM wine WHERE id=:id";
+function deleteProduct($id) {
+	$sql = "DELETE FROM products WHERE id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  

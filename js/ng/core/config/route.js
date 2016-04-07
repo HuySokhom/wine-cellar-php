@@ -3,11 +3,24 @@ app.config([
 	'$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
 		$stateProvider.
+			// route for product
 			state('/', {
 				url: '/',
 				templateUrl: 'js/ng/app/product/views/index.html',
 				controller: 'product_ctrl'
 			})
+			.state('/product/create', {
+				url: '/product/create',
+				templateUrl: 'js/ng/app/product/views/create.html',
+				controller: 'product_edit_ctrl'
+			})
+			.state('/product/edit', {
+				url: '/product/edit/:id',
+				templateUrl: 'js/ng/app/product/views/edit.html',
+				controller: 'product_edit_ctrl'
+			})
+
+			// route for category
 			.state('/category', {
 				url: '/category',
 				templateUrl: 'js/ng/app/category/views/index.html',
