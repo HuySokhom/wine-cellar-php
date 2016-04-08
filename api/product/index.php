@@ -5,10 +5,10 @@ require '../Slim/Slim.php';
 $app = new Slim();
 
 $app->get('/getProduct', 'getProducts');
-$app->get('/getProduct/:id',	'getWine');
+$app->get('/getProduct/:id',	'getProduct');
 $app->get('/product/search/:query', 'findByName');
-$app->post('/getProduct', 'addWine');
-$app->put('/getProduct/:id', 'updateWine');
+$app->post('/saveProduct', 'addProduct');
+$app->put('/getProduct/:id', 'updateProduct');
 $app->delete('/deleteProduct/:id',	'deleteProduct');
 
 $app->run();
@@ -27,8 +27,8 @@ function getProducts() {
 	}
 }
 
-function getWine($id) {
-	$sql = "SELECT * FROM wine WHERE id=:id";
+function getProduct($id) {
+	$sql = "SELECT * FROM products WHERE id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
@@ -44,44 +44,42 @@ function getWine($id) {
 
 function addProduct() {
 	$request = Slim::getInstance()->request();
-	$wine = json_decode($request->getBody());
-	$sql = "INSERT INTO wine (name, category_id, description, price, qty) VALUES (:name, :category_id, :description, :price, :qty)";
+	$product = json_decode($request->getBody());
+	$sql = "INSERT INTO products (name, category_id, description, price, qty) VALUES (:name, :category_id, :description, :price, :qty)";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
-		$stmt->bindParam("name", $wine->name);
-		$stmt->bindParam("category_id", $wine->category_id);
-		$stmt->bindParam("description", $wine->description);
-
-		$stmt->bindParam("price", $wine->price);
-		$stmt->bindParam("qty", $wine->qty);
+		$stmt->bindParam("name", $product->name);
+		$stmt->bindParam("category_id", $product->category_id);
+		$stmt->bindParam("description", $product->description);
+		$stmt->bindParam("price", $product->price);
+		$stmt->bindParam("qty", $product->qty);
 		$stmt->execute();
-		$wine->id = $db->lastInsertId();
+		$product->id = $db->lastInsertId();
 		$db = null;
-		echo json_encode($wine); 
+		echo json_encode($product);
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
 
-function updateWine($id) {
+function updateProduct($id) {
 	$request = Slim::getInstance()->request();
 	$body = $request->getBody();
-	$wine = json_decode($body);
-	$sql = "UPDATE wine SET name=:name, grapes=:grapes, country=:country, region=:region, year=:year, description=:description WHERE id=:id";
+	$product = json_decode($body);
+	$sql = "UPDATE products SET name=:name, category_id=:category_id, price=:price, qty=:qty, description=:description WHERE id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
-		$stmt->bindParam("name", $wine->name);
-		$stmt->bindParam("grapes", $wine->grapes);
-		$stmt->bindParam("country", $wine->country);
-		$stmt->bindParam("region", $wine->region);
-		$stmt->bindParam("year", $wine->year);
-		$stmt->bindParam("description", $wine->description);
+		$stmt->bindParam("name", $product->name);
+		$stmt->bindParam("category_id", $product->category_id);
+		$stmt->bindParam("price", $product->price);
+		$stmt->bindParam("qty", $product->qty);
+		$stmt->bindParam("description", $product->description);
 		$stmt->bindParam("id", $id);
 		$stmt->execute();
 		$db = null;
-		echo json_encode($wine); 
+		echo json_encode($product);
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}

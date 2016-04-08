@@ -7,24 +7,27 @@ app.controller(
 	, function ($scope, Restful, $stateParams, $location){
 		'use strict';
 
-		var url = 'api/category/getCategory/' + $stateParams.id;
+		var url = 'api/product/getProduct/' + $stateParams.id;
 
 		$scope.init = function(){
 			Restful.get( url ).success(function (data) {
 				console.log(data);
-				$scope.category = data.data;
+				$scope.product = data;
 			});
 		};
 		$scope.init();
 		$scope.save = function(){
 			var data = {
-				name: $scope.category.name,
-				description: $scope.category.description
+				name: $scope.product.name,
+				category_id: $scope.product.category_id,
+				price: $scope.product.price,
+				qty: $scope.product.qty,
+				description: $scope.product.description
 			};
 			console.log(data);
 			Restful.put( url , data).success(function (data) {
 				console.log(data);
-				$location.path('/category');
+				$location.path('/');
 			});
 
 		};

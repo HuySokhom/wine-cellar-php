@@ -10,8 +10,12 @@ app.controller(
 		$scope.save = function(){
 			var data = {
 				name: $scope.name,
-				description: $scope.description
+				description: $scope.description,
+				category_id: $scope.category_id,
+				price: $scope.price,
+				qty: $scope.qty,
 			};
+			console.log(data);
 			Restful.save( url , data).success(function (data) {
 				console.log(data);
 				$location.path('/');

@@ -20,6 +20,9 @@
             <th>
                 Price
             </th>
+            <th>
+                Qty
+            </th>
             <th width="250px">
                 Action
             </th>
@@ -32,13 +35,13 @@
                 <span data-ng-bind="p.name"></span>
             </td>
             <td>
-                <span data-ng-bind="p.category"></span>
+                <span data-ng-bind="p.category_name"></span>
             </td>
             <th>
                 <span data-ng-bind="p.description"></span>
             </th>
             <td>
-                <span data-ng-bind="p.price"></span>
+                <span data-ng-bind="p.price | currency"></span>
             </td>
             <td>
                 <span data-ng-bind="p.qty"></span>

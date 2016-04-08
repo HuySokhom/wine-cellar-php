@@ -3,15 +3,33 @@
 	<md-input-container class="md-block">
 		<label>Category Name</label>
 		<input
-			required name="category name"
-			data-ng-model="category.name"
+			required name="category id"
+			data-ng-model="product.category_id"
 		/>
+	</md-input-container>
+	<md-input-container class="md-block">
+		<label>Product Name</label>
+		<input
+			required name="product name"
+			data-ng-model="product.name"
+		/>
+	</md-input-container>
+	<md-input-container class="md-block">
+		<label>Price</label>
+		<input
+			required
+			data-ng-model="product.price"
+		/>
+	</md-input-container>
+	<md-input-container class="md-block">
+		<label>Qty</label>
+		<input ng-model="product.qty" required>
 	</md-input-container>
 	<md-input-container class="md-block">
 		<label>Description</label>
 		<textarea
-			required name="description"
-			data-ng-model="category.description"
+			required
+			data-ng-model="product.description"
 		></textarea>
 	</md-input-container>
 	<a href="#/">

@@ -12,7 +12,7 @@ app.config([
 			.state('/product/create', {
 				url: '/product/create',
 				templateUrl: 'js/ng/app/product/views/create.html',
-				controller: 'product_edit_ctrl'
+				controller: 'product_create_ctrl'
 			})
 			.state('/product/edit', {
 				url: '/product/edit/:id',
