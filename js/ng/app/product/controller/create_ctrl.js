@@ -7,6 +7,13 @@ app.controller(
 		'use strict';
 		var url = 'api/product/saveProduct';
 
+		$scope.initCategory = function(){
+			Restful.get( url ).success(function (data) {
+				console.log(data);
+				$scope.product = data;
+			});
+		};
+		$scope.initCategory();
 		$scope.save = function(){
 			var data = {
 				name: $scope.name,
